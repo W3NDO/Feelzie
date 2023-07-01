@@ -1,5 +1,5 @@
 class EmotionSpectrum {
-  static Map emotions = {
+  final Map emotions = {
     "JOY": [
       {"name": "Happy", "description": ""},
       {"name": "Euphoric", "description": ""},
@@ -35,7 +35,7 @@ class EmotionSpectrum {
       {"name": "Lonely", "description": ""},
       {"name": "Gloomy", "description": ""},
     ],
-    "Surprise": [
+    "SURPRISE": [
       {"name": "Moved", "description": ""},
       {"name": "Overcome", "description": ""},
       {"name": "Amazed", "description": ""},
@@ -46,5 +46,21 @@ class EmotionSpectrum {
 
   Map<String, String> getEmotionBreakdown(emotion) {
     return emotions[emotion];
+  }
+
+  List<String> getFineEmotions([String emotion = '']) {
+    List<String> fineEmotions = [];
+    if (emotion != '') {
+      emotions[emotion]
+          .forEach((fineEmotion) => fineEmotions.add(fineEmotion['name']));
+    } else {
+      emotions.keys.forEach((k) => emotions[k]
+          .forEach((fineEmotion) => fineEmotions.add(fineEmotion['name'])));
+    }
+    return fineEmotions;
+  }
+
+  List<String> getBaseEmotions() {
+    return List.from(emotions.keys);
   }
 }

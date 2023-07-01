@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:feelzie/screens/configure.dart';
+import 'package:feelzie/screens/new_entry.dart';
 
 class LandingScreen extends StatefulWidget {
   static String id = "Landing_screen";
@@ -43,15 +44,28 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 
   Widget feelingsWidget() {
-    return Container(child: Text("Feelings"));
+    return Container(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Feelings"),
+        FloatingActionButton.extended(
+          backgroundColor: Colors.cyan,
+          foregroundColor: Colors.white,
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const NewEntryScreen())),
+          icon: const Icon(Icons.new_label, size: 24.0),
+          label: const Text('New Entry'),
+        )
+      ],
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('FEELZI3')),
         body: Center(
-          child: feelingsWidget(),
-        ));
+      child: feelingsWidget(),
+    ));
   }
 }
