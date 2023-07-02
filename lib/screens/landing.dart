@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:feelzie/screens/configure.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 
 import '../utils/local_storage_service.dart';
 
@@ -24,11 +25,11 @@ class _LandingScreenState extends State<LandingScreen> {
     super.initState();
 
     createOpenBox();
-    unformattedRecords = loadStoredRecords();
   }
 
   void createOpenBox() async {
     userBox = await LocalStorageService.openBox('userBox');
+    unformattedRecords = loadStoredRecords();
   }
 
   void doNothing() {}
@@ -56,10 +57,11 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 
   dynamic loadStoredRecords() {
-    List records = userBox.get("records");
-    if (records.isEmpty) {
+    List records = [];
+    if (userBox.get('records') == null) {
       debugPrint("Empty");
     } else {
+      records = userBox.get("records");
       debugPrint(records.join(','));
     }
     setState(() {});
@@ -71,10 +73,11 @@ class _LandingScreenState extends State<LandingScreen> {
   }
 
   List formatRecords() {
+    final DateFormat formatter = DateFormat('yyyy-mm-dd');
     List formattedRecords = [];
     unformattedRecords.forEach((emotion) => emotion.forEach((date, record) =>
         formattedRecords
-            .add("On ${DateTime.parse(date!)} You felt ${record[0]}")));
+            .add("On ${formatter.format(date!)} You felt ${record[0]}")));
 
     return formattedRecords;
   }
