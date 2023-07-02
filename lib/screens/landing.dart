@@ -3,34 +3,40 @@ import 'package:feelzie/screens/configure.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../main.dart';
 import '../utils/local_storage_service.dart';
-
-late Box box;
 
 class LandingScreen extends StatefulWidget {
   static String id = "Landing_screen";
   static const routeName = '/Landing';
-  const LandingScreen({Key? key}) : super(key: key);
+  const LandingScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<LandingScreen> createState() => _LandingScreenState();
 }
 
 class _LandingScreenState extends State<LandingScreen> {
-  void doNothing() {}
+  late Box userBox;
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    await Hive.initFlutter();
-    userBox = await LocalStorageService.openLazyBox('userBox');
+
+    createOpenBox();
+    unformattedRecords = loadStoredRecords();
   }
+
+  void createOpenBox() async {
+    userBox = await LocalStorageService.openBox('userBox');
+  }
+
+  void doNothing() {}
+  List unformattedRecords = [];
 
   Widget configureWidget() {
     // show this if the user is a first Time user
     return Column(
-      // use a ternary to display the config widgets or the landing page widgets
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         const Text(
@@ -49,21 +55,35 @@ class _LandingScreenState extends State<LandingScreen> {
     );
   }
 
-  Widget landingWidgets() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [Text("stuff")],
-    );
+  dynamic loadStoredRecords() {
+    List records = userBox.get("records");
+    if (records.isEmpty) {
+      debugPrint("Empty");
+    } else {
+      debugPrint(records.join(','));
+    }
+    setState(() {});
+    return records;
   }
 
   List loadEntries() {
-    // userBox.get();
-
     return [];
   }
 
+  List formatRecords() {
+    List formattedRecords = [];
+    unformattedRecords.forEach((emotion) => emotion.forEach((date, record) =>
+        formattedRecords
+            .add("On ${DateTime.parse(date!)} You felt ${record[0]}")));
+
+    return formattedRecords;
+  }
+
   Widget feelingsWidget() {
-    return Text("Hello There");
+    dynamic formattedfeels = formatRecords();
+    debugPrint(formattedfeels.join(','));
+
+    return Text("Bing Bong");
   }
 
   @override

@@ -1,6 +1,10 @@
+import 'package:feelzie/main.dart';
 import 'package:flutter/material.dart';
 import 'package:feelzie/utils/emotion_spectrum.dart';
+import 'package:hive/hive.dart';
 import 'package:select_form_field/select_form_field.dart';
+
+import '../utils/local_storage_service.dart';
 
 class NewEntryScreen extends StatefulWidget {
   static String id = "Settings_screen";
@@ -12,7 +16,22 @@ class NewEntryScreen extends StatefulWidget {
 }
 
 class _NewEntryScreenState extends State<NewEntryScreen> {
+  late Box userBox;
+
   void doNothing() {}
+
+  @override
+  initState() {
+    super.initState();
+
+    createOpenBox();
+    setBaseEmotions();
+    setFineEmotions('');
+  }
+
+  void createOpenBox() async {
+    userBox = await LocalStorageService.openBox('userBox');
+  }
 
   EmotionSpectrum emotes = new EmotionSpectrum();
   final _formKey = GlobalKey<FormState>();
@@ -22,6 +41,7 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
 
   List<Map<String, dynamic>> dropdownBaseEmotions = [];
   List<Map<String, dynamic>> dropdownFineEmotions = [];
+
   void setBaseEmotions() {
     List emotions = emotes.getBaseEmotions();
     emotions.forEach(
@@ -51,17 +71,32 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
     setState(() {});
   }
 
-  @override
-  void initState() {
-    super.initState();
+  void storeRecord(String baseEmotion, String fineEmotion, String description) {
+    DateTime date = DateTime.now();
+    Map newRecord = {
+      date: [baseEmotion, fineEmotion, description]
+    };
+    List existingRecords = [];
+    if (userBox.get('records') != null) {
+      existingRecords = userBox.get('records');
+    }
+    existingRecords.insert(0, newRecord);
+    debugPrint(existingRecords.join(','));
 
-    setBaseEmotions();
-    setFineEmotions('');
+    userBox.put('records', existingRecords);
+  }
+
+  void saveRecord() {
+    String baseEmotion = baseEmotionController.text;
+    String fineEmotion = fineEmotionController.text;
+    String description = descriptionController.text;
+
+    storeRecord(baseEmotion, fineEmotion, description);
+    Navigator.pop(context);
   }
 
   Widget FeelingsForm() {
     EmotionSpectrum emotes = new EmotionSpectrum();
-    debugPrint(emotes.getBaseEmotions()[5]);
     var size = MediaQuery.of(context).size;
     return Form(
         key: _formKey,
@@ -100,7 +135,8 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
                         SelectFormField(
                           controller: baseEmotionController,
                           type: SelectFormFieldType.dropdown,
-                          icon: Icon(Icons.arrow_drop_down_circle_outlined),
+                          icon:
+                              const Icon(Icons.arrow_drop_down_circle_outlined),
                           labelText: "What is your general mood rn?",
                           items: dropdownBaseEmotions,
                           onChanged: (val) => {
@@ -142,7 +178,7 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
                           children: [
                             Expanded(
                               child: ElevatedButton(
-                                onPressed: doNothing,
+                                onPressed: saveRecord,
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.cyan,
                                     foregroundColor: Colors.white,

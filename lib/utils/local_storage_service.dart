@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 
 class LocalStorageService {
   static openBox(String boxName) async {
@@ -15,3 +16,6 @@ class LocalStorageService {
     Hive.box(boxName).close();
   }
 }
+
+// how to model the stored records
+// store by date

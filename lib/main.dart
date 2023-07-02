@@ -9,6 +9,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 late Box userBox;
 
 void main() async {
+  await Hive.initFlutter();
+  userBox = await LocalStorageService.openBox('userBox');
   runApp(const MyApp());
 }
 
@@ -21,10 +23,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // title: 'FEELZI3',
       theme: ThemeData(
-        colorScheme: ColorScheme.light(),
+        colorScheme: const ColorScheme.light(),
         useMaterial3: true,
       ),
-      darkTheme: ThemeData(colorScheme: ColorScheme.dark(), useMaterial3: true),
+      darkTheme:
+          ThemeData(colorScheme: const ColorScheme.dark(), useMaterial3: true),
       home: const MyHomePage(title: 'FEELZI3'),
     );
   }
