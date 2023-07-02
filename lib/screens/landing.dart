@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:feelzie/screens/configure.dart';
-import 'package:feelzie/screens/new_entry.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+import '../main.dart';
+import '../utils/local_storage_service.dart';
+
+late Box box;
 
 class LandingScreen extends StatefulWidget {
   static String id = "Landing_screen";
@@ -13,6 +19,13 @@ class LandingScreen extends StatefulWidget {
 
 class _LandingScreenState extends State<LandingScreen> {
   void doNothing() {}
+
+  @override
+  void initState() async {
+    super.initState();
+    await Hive.initFlutter();
+    userBox = await LocalStorageService.openLazyBox('userBox');
+  }
 
   Widget configureWidget() {
     // show this if the user is a first Time user
@@ -43,22 +56,14 @@ class _LandingScreenState extends State<LandingScreen> {
     );
   }
 
+  List loadEntries() {
+    // userBox.get();
+
+    return [];
+  }
+
   Widget feelingsWidget() {
-    return Container(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text("Feelings"),
-        FloatingActionButton.extended(
-          backgroundColor: Colors.cyan,
-          foregroundColor: Colors.white,
-          onPressed: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const NewEntryScreen())),
-          icon: const Icon(Icons.new_label, size: 24.0),
-          label: const Text('New Entry'),
-        )
-      ],
-    ));
+    return Text("Hello There");
   }
 
   @override

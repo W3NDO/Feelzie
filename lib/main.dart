@@ -1,8 +1,14 @@
 import 'package:feelzie/screens/landing.dart';
+import 'package:feelzie/screens/new_entry.dart';
 import 'package:feelzie/screens/settings.dart';
+import 'package:feelzie/utils/local_storage_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+late Box userBox;
+
+void main() async {
   runApp(const MyApp());
 }
 
@@ -43,11 +49,25 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.cyan[800],
+          foregroundColor: Colors.white,
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const NewEntryScreen())),
+          child: const Icon(Icons.new_label, size: 24.0),
+          // label: const Text('New Entry'),
+        ),
         bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: Colors.cyan,
+            backgroundColor: Colors.cyan[800],
             type: BottomNavigationBarType.fixed,
             currentIndex: selectedIndex,
             onTap: onItemTapped,

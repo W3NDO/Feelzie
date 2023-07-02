@@ -37,6 +37,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   local_auth: ^2.1.6
   select_form_field: ^2.2.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:

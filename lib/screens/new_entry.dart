@@ -125,7 +125,7 @@ class _NewEntryScreenState extends State<NewEntryScreen> {
                         ),
                         SizedBox(height: size.height * 0.06),
                         TextFormField(
-                          autofocus: true,
+                          autofocus: false,
                           controller: descriptionController,
                           decoration: InputDecoration(
                             hintText: "Explain why you think you feel this way",
