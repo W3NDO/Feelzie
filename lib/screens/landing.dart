@@ -68,25 +68,41 @@ class _LandingScreenState extends State<LandingScreen> {
     return records;
   }
 
-  List loadEntries() {
-    return [];
+  Future<void> _pullRefresh() async {
+    setState(() {});
   }
 
   List formatRecords() {
-    final DateFormat formatter = DateFormat('yyyy-mm-dd');
+    final DateFormat formatter = DateFormat('EEEE(h:mm a) d of MMMM, yyyy');
     List formattedRecords = [];
     unformattedRecords.forEach((emotion) => emotion.forEach((date, record) =>
-        formattedRecords
-            .add("On ${formatter.format(date!)} You felt ${record[0]}")));
-
+        formattedRecords.add(
+            "On ${formatter.format(date!)} You felt ${record[0]}(${record[1]}). Reason: '${record[2]}'")));
     return formattedRecords;
   }
 
   Widget feelingsWidget() {
     dynamic formattedfeels = formatRecords();
     debugPrint(formattedfeels.join(','));
+    Widget view = RefreshIndicator(
+      onRefresh: _pullRefresh,
+      child: ListView.builder(
+        padding: const EdgeInsets.all(8),
+        itemCount: formattedfeels.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            alignment: Alignment.center,
+            height: 50,
+            color: Colors.cyan[800],
+            child: Center(
+              child: Text(formattedfeels[index]),
+            ),
+          );
+        },
+      ),
+    );
 
-    return Text("Bing Bong");
+    return view;
   }
 
   @override
