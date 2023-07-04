@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/local_auth.dart';
+
 class SettingsScreen extends StatefulWidget {
   static String id = "Settings_screen";
   static const routeName = '/settings';
@@ -15,9 +17,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('FEELZI3')),
         body: Center(
-          child: Text("Settings Screen"),
-        ));
+      child: Text("Settings Screen"),
+    ));
   }
 }
