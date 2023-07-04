@@ -1,7 +1,7 @@
 import 'package:feelzie/screens/home.dart';
 import 'package:feelzie/screens/landing.dart';
 import 'package:feelzie/screens/new_entry.dart';
-import 'package:feelzie/screens/settings.dart';
+import 'package:feelzie/screens/motivation.dart';
 
 import 'package:feelzie/utils/local_storage_service.dart';
 import 'package:feelzie/utils/local_auth.dart';
@@ -47,7 +47,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List screens = [const LandingScreen(), const SettingsScreen()];
+  List screens = [const LandingScreen(), const MotivationScreen()];
   dynamic localAuth = new LocalAuth();
   bool isAuthenticated = false;
 
@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.settings), label: 'Settings')
+                    icon: Icon(Icons.run_circle_rounded), label: 'Motivation')
               ]),
           body: screens[selectedIndex]);
     } else {
@@ -123,7 +123,9 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               Text("Gotta login to see the stuff on here."),
               ElevatedButton(
-                  onPressed: tryToAuthenticate, child: Icon(Icons.fingerprint))
+                onPressed: tryToAuthenticate,
+                child: Icon(Icons.fingerprint),
+              )
             ],
           ),
         ),
