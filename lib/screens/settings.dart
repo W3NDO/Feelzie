@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/local_auth.dart';
+
 class SettingsScreen extends StatefulWidget {
   static String id = "Settings_screen";
   static const routeName = '/settings';
