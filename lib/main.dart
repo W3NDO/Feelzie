@@ -55,10 +55,16 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    tryLocalAuth();
+    resetAuthentication();
+    tryToAuthenticate();
   }
 
-  void tryLocalAuth() async {
+  void resetAuthentication() {
+    isAuthenticated = false;
+    setState(() {});
+  }
+
+  void tryToAuthenticate() async {
     dynamic canAuth = await localAuth.deviceCanBiometricAuth();
     if (canAuth) {
       isAuthenticated = await localAuth.requestAuthentication();
@@ -117,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               Text("Gotta login to see the stuff on here."),
               ElevatedButton(
-                  onPressed: tryLocalAuth, child: Icon(Icons.fingerprint))
+                  onPressed: tryToAuthenticate, child: Icon(Icons.fingerprint))
             ],
           ),
         ),
