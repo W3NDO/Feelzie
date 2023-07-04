@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:feelzie/screens/settings.dart';
+import 'package:feelzie/screens/motivation.dart';
 import 'package:feelzie/screens/landing.dart';
 
 import '../utils/local_auth.dart';
@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List screens = [const LandingScreen(), const SettingsScreen()];
+  List screens = [const LandingScreen(), const MotivationScreen()];
   final LocalAuth auth = LocalAuth();
 
   int selectedIndex = 0;
